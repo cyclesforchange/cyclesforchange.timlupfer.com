@@ -42,6 +42,8 @@
     <link href="css/wysiwyg/bootstrap-wysihtml5.css" rel="stylesheet">
     <link href="css/wysiwyg/wysiwyg-color.css" rel="stylesheet">
     <link href="css/charts-graphs.css" rel="stylesheet">
+    <link href="css/alertify.core.css" rel="stylesheet" id="toggleCSS">
+
   </head>
   <body>
 
@@ -62,6 +64,14 @@
                 <span class="fs1" aria-hidden="true" data-icon="&#xe102;"></span>
               </div>
               New User
+            </a>
+          </li>
+          <li>
+            <a href="users.html">
+              <div class="icon">
+                <span class="fs1" aria-hidden="true" data-icon="&#xe0e2;"></span>
+              </div>
+              List Users
             </a>
           </li>
         </ul>
@@ -521,62 +531,13 @@
     <script src="js/tiny-scrollbar.js">
     </script>
     
-    
+    <script type="text/javascript" src="js/alertify.min.js">
+    </script>
     
     <script type="text/javascript">
+      
       //ScrollUp
       $(function () {
-
-        $("#age").change(function(event) {
-          var age = parseInt($("#newuser").find( 'input[name="age"]' ).val());
-          if (age > 12) {
-            $("#schoollunch").hide();
-            $("#incomelevel").show();
-          } else if (age > 0 && age <= 12) {
-            $("#incomelevel").hide();
-            $("#schoollunch").show();
-          } else {
-            $("#incomelevel").hide();
-            $("#schoollunch").hide();
-          }
-        });
-        
-        $("#newuser").submit(function(event) {
-          /* stop form from submitting normally */
-          event.preventDefault();
-          /* get some values from elements on the page: */
-          var $form = $( this ),
-              first_name = $form.find( 'input[name="first_name"]' ).val(),
-              last_name = $form.find( 'input[name="last_name"]' ).val(),
-              address = $form.find( 'input[name="address"]' ).val(),
-              city = $form.find( 'input[name="city"]' ).val(),
-              email = $form.find( 'input[name="email"]' ).val(),
-              zip = $form.find( 'input[name="zip"]' ).val(),
-              state = $form.find( 'select[id="state"]' ).val(),
-              phone = $form.find( 'input[name="phone"]' ).val(),
-              gender = $form.find( 'select[id="gender"]' ).val(),
-              ethnicity = $form.find( 'select[id="ethnicity"]' ).val(),
-              age = $form.find( 'input[name="age"]' ).val(),
-              affiliation = $form.find( 'input[name="affiliation"]' ).val(),
-              url = "http://webhook.webscript.io";
-         
-          /* Send the data using post */
-          var posting = $.post( url, { 
-            'first_name' : first_name,
-            'last_name' : last_name,
-            'address' : address,
-            'city' : city,
-            'state' : state,
-            'zip' : zip,
-            'email' : email,
-          } );
-         
-          /* Put the results in a div */
-          posting.done(function( data ) {
-          
-          });
-        });
-
         $.scrollUp({
           scrollName: 'scrollUp', // Element ID
           topDistance: '300', // Distance from top before showing element (px)
@@ -586,6 +547,81 @@
           animationOutSpeed: 400, // Animation out speed (ms)
           scrollText: 'Scroll to top', // Text for element
           activeOverlay: false, // Set CSS color to display scrollUp active point, e.g '#00FFFF'
+        });
+      });
+
+      $("#age").change(function(event) {
+        var age = parseInt($("#newuser").find( 'input[name="age"]' ).val());
+        if (age > 12) {
+          $("#schoollunch").hide();
+          $("#incomelevel").show();
+        } else if (age > 0 && age <= 12) {
+          $("#incomelevel").hide();
+          $("#schoollunch").show();
+        } else {
+          $("#incomelevel").hide();
+          $("#schoollunch").hide();
+        }
+      });
+
+      reset = function () {
+        $("toggleCSS").href = "css/alertify.core.css";
+        alertify.set({
+          labels: {
+            ok: "OK",
+            cancel: "Cancel"
+          },
+          delay: 5000,
+          buttonReverse: false,
+          buttonFocus: "ok"
+        });
+      };
+      
+      $("#newuser").submit(function(event) {
+        /* stop form from submitting normally */
+        event.preventDefault();
+        /* get some values from elements on the page: */
+        var $form = $( this ),
+            first_name = $form.find( 'input[name="first_name"]' ).val(),
+            last_name = $form.find( 'input[name="last_name"]' ).val(),
+            address = $form.find( 'input[name="address"]' ).val(),
+            city = $form.find( 'input[name="city"]' ).val(),
+            email = $form.find( 'input[name="email"]' ).val(),
+            zip = $form.find( 'input[name="zip"]' ).val(),
+            state = $form.find( 'select[id="state"]' ).val(),
+            phone = $form.find( 'input[name="phone"]' ).val(),
+            gender = $form.find( 'select[id="gender"]' ).val(),
+            ethnicity = $form.find( 'select[id="ethnicity"]' ).val(),
+            age = $form.find( 'input[name="age"]' ).val(),
+            affiliation = $form.find( 'input[name="affiliation"]' ).val(),
+            interests = $form.find( 'textarea[id="interests"]' ).val(),
+            referred = $form.find( 'textarea[id="referred"]' ).val(),
+            url = "http://thawing-mesa-1192.herokuapp.com/user/new";
+       
+        /* Send the data using post */
+        var posting = $.post( url, { 
+          'first_name' : first_name,
+          'last_name' : last_name,
+          'address' : address,
+          'city' : city,
+          'state' : state,
+          'zip' : zip,
+          'email' : email,
+          'phone' : phone,
+          'gender' : gender,
+          'ethnicity' : ethnicity,
+          'age' : age,
+          'affiliation' : affiliation,
+          'interests' : interests,
+          'referred' : referred,
+        } );
+       
+        /* Put the results in a div */
+        posting.done(function( data ) {
+          console.log(data);
+          reset();
+          alertify.success("User added!");
+          $("#newuser")[0].reset();
         });
       });
 
