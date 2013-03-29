@@ -5603,7 +5603,7 @@ header {
   display: block;
   float: left;
   position: relative;
-  top: 50px; }
+  top: 0; }
   #mainnav > ul {
     width: 110px;
     position: absolute; }
@@ -6236,7 +6236,7 @@ header {
 .dashboard-wrapper {
   position: relative;
   top: 0;
-  margin-top: 50px;
+  margin-top: 0;
   margin-left: 110px;
   background: #f2f2f2;
   -webkit-border-radius: 0 0 0 4px;
