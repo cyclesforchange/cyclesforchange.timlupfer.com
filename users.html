@@ -159,29 +159,15 @@
         &copy; Cycles for Change 2013
       </p>
     </footer>
-    
-    <script src="js/wysiwyg/wysihtml5-0.3.0.js">
+    <div class="loading_modal"></div>
+    <script src="//ajax.googleapis.com/ajax/libs/jquery/1.9.1/jquery.min.js"></script>
     </script>
-    <script src="js/jquery.min.js">
+    <script type="text/javascript">
+      $("body").addClass("loading");
     </script>
     <script src="js/bootstrap.js">
     </script>
     <script src="js/jquery.scrollUp.js">
-    </script>
-
-    <script src="js/wysiwyg/bootstrap-wysihtml5.js">
-    </script>
-    <script type="text/javascript" src="js/date-picker/date.js">
-    </script>
-    <script type="text/javascript" src="js/date-picker/daterangepicker.js">
-    </script>
-
-    <!-- Google Visualization JS -->
-    <script type="text/javascript" src="https://www.google.com/jsapi">
-    </script>
-
-    <!-- Sparkline JS -->
-    <script src="js/jquery.sparkline.js">
     </script>
     
     <!-- Tiny Scrollbar JS -->
@@ -195,7 +181,6 @@
     </script>
     
     <script type="text/javascript">
-      
       //ScrollUp
       $(function () {
         $.scrollUp({
@@ -244,7 +229,7 @@
             ]);
             
           });
-          
+          $("body").removeClass("loading");     
         });
 
       });
@@ -255,7 +240,6 @@
         $(this).tab('show');
       })
 
-      </script>
-            
+      </script>    
     </body>
     </html>

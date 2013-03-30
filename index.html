@@ -276,21 +276,16 @@
         &copy; Cycles for Change 2013
       </p>
     </footer>
-    
-    <script src="js/wysiwyg/wysihtml5-0.3.0.js">
+    <div class="loading_modal"></div>
+
+    <script src="//ajax.googleapis.com/ajax/libs/jquery/1.9.1/jquery.min.js"></script>
     </script>
-    <script src="js/jquery.min.js">
+    <script type="text/javascript">
+      $("body").addClass("loading");
     </script>
     <script src="js/bootstrap.js">
     </script>
     <script src="js/jquery.scrollUp.js">
-    </script>
-
-    <script src="js/wysiwyg/bootstrap-wysihtml5.js">
-    </script>
-    <script type="text/javascript" src="js/date-picker/date.js">
-    </script>
-    <script type="text/javascript" src="js/date-picker/daterangepicker.js">
     </script>
 
     <!-- Google Visualization JS -->
@@ -336,6 +331,7 @@
       $(document).ready(function () {
         drawChart1();
         drawChart2();
+        $("body").removeClass("loading");
       })
 
       function drawChart1() {
@@ -423,19 +419,6 @@
         chart.draw(data, options);
       }
 
-      //Tooltip
-      $('a').tooltip('hide');
-      $('i').tooltip('hide');
-
-
-      //Tiny Scrollbar
-      $('#scrollbar').tinyscrollbar();
-      $('#scrollbar-one').tinyscrollbar();
-      $('#scrollbar-two').tinyscrollbar();
-      $('#scrollbar-three').tinyscrollbar();
-
-
-
       //Tabs
       $('#myTab a').click(function (e) {
         e.preventDefault();
@@ -468,105 +451,6 @@
           barWidth: 6,
           height: 30,
         });
-      });
-
-
-      //Range Date Picker
-
-      $('.report_range').daterangepicker({
-        ranges: {
-          'Today': ['today', 'today'],
-          'Yesterday': ['yesterday', 'yesterday'],
-          'Last 7 Days': [Date.today().add({
-            days: -6
-          }), 'today'],
-          'Last 30 Days': [Date.today().add({
-            days: -29
-          }), 'today'],
-          'This Month': [Date.today().moveToFirstDayOfMonth(), Date.today().moveToLastDayOfMonth()],
-          'Last Month': [Date.today().moveToFirstDayOfMonth().add({
-            months: -1
-          }), Date.today().moveToFirstDayOfMonth().add({
-            days: -1
-          })]
-        },
-        opens: 'left',
-        format: 'MM/dd/yyyy',
-        separator: ' to ',
-        startDate: Date.today().add({
-          days: -29
-        }),
-        endDate: Date.today(),
-        minDate: '01/01/2012',
-        maxDate: '12/31/2013',
-        locale: {
-          applyLabel: 'Submit',
-          fromLabel: 'From',
-          toLabel: 'To',
-          customRangeLabel: 'Custom Range',
-          daysOfWeek: ['Su', 'Mo', 'Tu', 'We', 'Th', 'Fr', 'Sa'],
-          monthNames: ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'June', 'July', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'],
-          firstDay: 1
-        },
-        showWeekNumbers: true,
-        buttonClasses: ['btn-danger']
-      },
-
-      function (start, end) {
-        $('.report_range span').html(start.toString('MMMM d, yyyy') + ' - ' + end.toString('MMMM d, yyyy'));
-      });
-
-      //Set the initial state of the picker label
-      $('.report_range span').html(Date.today().add({
-        days: -29
-      }).toString('MMMM d, yyyy') + ' - ' + Date.today().toString('MMMM d, yyyy'));
-
-
-      //Main menu navigation
-      
-      $('.submenu > a').click(function(e){
-        e.preventDefault();
-        var submenu = $(this).siblings('ul');
-        var li = $(this).parents('li');
-        var submenus = $('#mainnav li.submenu ul');
-        var submenus_parents = $('#mainnav li.submenu');
-        if(li.hasClass('open'))
-        {
-          if(($(window).width() > 768) || ($(window).width() < 479)) {
-            submenu.slideUp();
-          } else {
-            submenu.fadeOut(250);
-          }
-          li.removeClass('open');
-        } else 
-        {
-          if(($(window).width() > 768) || ($(window).width() < 479)) {
-            submenus.slideUp();     
-            submenu.slideDown();
-          } else {
-            submenus.fadeOut(250);      
-            submenu.fadeIn(250);
-          }
-          submenus_parents.removeClass('open');   
-          li.addClass('open');  
-        }
-      });
-      
-      var ul = $('#mainnav > ul');
-      
-      $('#mainnav > a').click(function(e)
-      {
-        e.preventDefault();
-        var mainnav = $('#mainnav');
-        if(mainnav.hasClass('open'))
-        {
-          mainnav.removeClass('open');
-          ul.slideUp(250);
-        } else 
-        {
-          mainnav.addClass('open');
-          ul.slideDown(250);
-        }
       });
 
       </script>
