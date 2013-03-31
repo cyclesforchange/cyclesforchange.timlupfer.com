@@ -96,6 +96,11 @@
                       </a>
                     </li>
                     <li class="">
+                      <a data-toggle="tab" href="user.html#volunteer">
+                        Volunteer
+                      </a>
+                    </li>
+                    <li class="">
                       <a data-toggle="tab" href="user.html#bikelibrary">
                         Bike Library
                       </a>
@@ -513,6 +518,87 @@
                         </div>
                       </div>
                     </div>
+
+                    <!-- BEGIN VOLUNTEER TAB -->
+                    <div id="volunteer" class="tab-pane fade">
+
+                      <!-- BEGIN ADD A NEW VOLUNTEER SHIFT -->
+                      <div class="widget">
+                        <div class="widget-header">
+                          <div class="title">
+                            <span class="fs1" aria-hidden="true" data-icon="&#xe023;"></span> Add Activity 
+                            <span class="mini-title">
+                              Add your volunteer activity
+                            </span>
+                          </div>
+                        </div>
+                        <div class="widget-body">
+                          <form id="volunteer-add" class="form-horizontal no-margin">
+                            <div class="control-group">
+                              <label class="control-label">
+                                Activity Details
+                              </label>
+                              <div class="controls controls-row">
+                                <input type="text" id="v_date" class="span4" placeholder="Enter date"  />
+                                <input type="text" id="v_type" class="span4 input-left-top-margins" placeholder="Enter Activity type"  />
+                              </div>
+                            </div>
+
+                            <div class="control-group">
+                              <label class="control-label">
+                                Hours and redemption
+                              </label>
+                              <div class="controls controls-row">
+                                <input type="text" id="v_hours" class="span4" placeholder="Total Hours"  />
+                                <input type="text" id="v_redeemed" class="span4 input-left-top-margins" placeholder="Parts reedeemed"  />
+                              </div>
+                            </div>
+        
+                            <div class="form-actions no-margin">
+                              <button type="submit" class="btn btn-info pull-right">
+                                Add Activity
+                              </button>
+                              <div class="clearfix">
+                              </div>
+                            </div>
+                          </form>
+                        </div>
+                      </div>
+
+                      <!-- BEGIN DATATABLES RESULTS FOR VOLUNTEER SHIFTS -->
+                      <div class="widget">
+                        <div class="widget-header">
+                          <div class="title">
+                            <span class="fs1" aria-hidden="true" data-icon="&#xe14a;"></span> User list
+                          </div>
+                        </div>
+                        <div class="widget-body">
+                          <div id="dt_example" class="example_alt_pagination">
+                            <table class="table table-condensed table-striped table-hover table-bordered pull-left" id="data-table">    
+                              <thead>
+                                <tr>
+                                  <th>
+                                    Date
+                                  </th>
+                                  <th>
+                                    Activity
+                                  </th>
+                                  <th>
+                                    Hours
+                                  </th>
+                                  <th>
+                                    Used Parts redeemed
+                                  </th>
+                                </tr>
+                              </thead>
+                            </table>
+                            <div class="clearfix">
+                            </div>
+                            
+                          </div>
+                        </div>
+                      </div>
+                    </div>
                     
                     <!-- BEGIN BIKE LIBRARY TAB -->
                     <div id="bikelibrary" class="tab-pane fade">
@@ -524,16 +610,6 @@
                       </p>
                     </div>
                     
-                    <!-- BEGIN VOLUNTEER TAB -->
-                    <div id="bikelibrary" class="tab-pane fade">
-                      <p>
-                        Raw denim you probably haven't heard of them jean shorts Austin. Nesciunt tofu stumptown aliqua, retro synth master cleanse. Reprehenderit butcher retro keffiyeh dreamcatcher synth terry richardsoAustin. Nesciunt tofu stumptown aliqua, retro synth master cleanse.
-                      </p>
-                      <p>
-                        Mustache cliche tempor, williamsburg carles vegan helvetica.prehenderit butcher retro keffiyeh dreamcatcher synth. Cosby Reprehenderit butcher retro keffiyeh dreamcatcher synth. Cosby sweater eu banh mi, qui irure terry richardson ex squid.
-                      </p>
-                    </div>
-                  </div>
                 </div>
               </div>
             </div>
@@ -652,6 +728,24 @@
             $("#incomelevel").hide();
             $("#schoollunch").hide();
           }
+          //BEGIN VOLUNTEER DATATABLES
+          $('#data-table').dataTable({
+            "sPaginationType": "full_numbers",
+          });
+          
+          $.getJSON(url, { 'id' : $.query.get('id'), 'volunteer' : true }, function(json) {
+            $.each(json, function(key, row) {
+              //console.log(key, row);
+              $('#data-table').dataTable().fnAddData([
+                row.date,
+                row.type,
+                row.hours,
+                row.redeemed,
+              ]);
+              
+            });
+          });          
+
           // REMOVE THE LOADING CLASS FROM BODY
           $("body").removeClass("loading");
         });
@@ -696,12 +790,44 @@
           'interests' : interests,
           'referred' : referred,
         } );
-        
         // DISPLAY A NOTIFICATION THAT WE SUCCEEDED - CURRENTLY DONE BLINDLY. SHOULD BE MODIFIED TO PARSEJSON
         posting.done(function( data ) {
-          console.log(data);
           reset();
           alertify.success("User information updated!");
+        });
+      });
+
+      //VOLUNTEER FORM
+      $("#volunteer-add").submit(function(event) {
+        event.preventDefault();
+        // GET THE VALUES FROM THE FORM FIELDS
+        var $form = $( this ),
+            v_date = $form.find( 'input[id="v_date"]' ).val(),
+            v_hours = $form.find( 'input[id="v_hours"]' ).val(),
+            v_redeemed = $form.find( 'input[id="v_redeemed"]' ).val(),
+            v_type = $form.find( 'input[id="v_type"]' ).val(),
+            v_pid = $.query.get('id'),
+            url = "http://thawing-mesa-1192.herokuapp.com/user/volunteer";
+       
+        // SEND A POST REQUEST TO OUR API
+        var posting = $.post( url, {
+          'pid' : v_pid,
+          'date' : v_date,
+          'type' : v_type,
+          'hours' : v_hours,
+          'redeemed' : v_redeemed,
+        } );
+        // DISPLAY A NOTIFICATION THAT WE SUCCEEDED - CURRENTLY DONE BLINDLY. SHOULD BE MODIFIED TO PARSEJSON
+        posting.done(function( data ) {
+          reset();
+          alertify.success("Volunteer activity added!");
+          $("#volunteer-add")[0].reset();
+          $('#data-table').dataTable().fnAddData([
+            v_date,
+            v_type,
+            v_hours,
+            v_redeemed,
+          ]);
         });
       });
 
