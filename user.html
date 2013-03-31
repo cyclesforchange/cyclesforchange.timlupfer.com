@@ -512,9 +512,19 @@
                           </form>
                         </div>
                       </div>
-
-
                     </div>
+                    
+                    <!-- BEGIN BIKE LIBRARY TAB -->
+                    <div id="bikelibrary" class="tab-pane fade">
+                      <p>
+                        Raw denim you probably haven't heard of them jean shorts Austin. Nesciunt tofu stumptown aliqua, retro synth master cleanse. Reprehenderit butcher retro keffiyeh dreamcatcher synth terry richardsoAustin. Nesciunt tofu stumptown aliqua, retro synth master cleanse.
+                      </p>
+                      <p>
+                        Mustache cliche tempor, williamsburg carles vegan helvetica.prehenderit butcher retro keffiyeh dreamcatcher synth. Cosby Reprehenderit butcher retro keffiyeh dreamcatcher synth. Cosby sweater eu banh mi, qui irure terry richardson ex squid.
+                      </p>
+                    </div>
+                    
+                    <!-- BEGIN VOLUNTEER TAB -->
                     <div id="bikelibrary" class="tab-pane fade">
                       <p>
                         Raw denim you probably haven't heard of them jean shorts Austin. Nesciunt tofu stumptown aliqua, retro synth master cleanse. Reprehenderit butcher retro keffiyeh dreamcatcher synth terry richardsoAustin. Nesciunt tofu stumptown aliqua, retro synth master cleanse.
@@ -542,6 +552,7 @@
     <script src="//ajax.googleapis.com/ajax/libs/jquery/1.9.1/jquery.min.js"></script>
     </script>
     <script type="text/javascript">
+      // ADD THE LOADING CLASS IMMEDIATELY AFTER LOADING JQUERY
       $("body").addClass("loading");
     </script>
     <script src="js/bootstrap.js">
@@ -549,7 +560,6 @@
     <script src="js/jquery.scrollUp.js">
     </script>
     
-    <!-- Tiny Scrollbar JS -->
     <script src="js/tiny-scrollbar.js">
     </script>
     
@@ -564,7 +574,7 @@
     
     <script type="text/javascript">
       
-      //ScrollUp
+      // SET VALUES FOR SCROLLUP
       $(function () {
         $.scrollUp({
           scrollName: 'scrollUp', // Element ID
@@ -578,12 +588,13 @@
         });
       });
 
-      //Tabs
+      // TABS
       $('#myTab a').click(function (e) {
         e.preventDefault();
         $(this).tab('show');
       })
       
+      // EXPOSE DIFFERENT QUESTIONS FOR DIFFERENT AGES
       $("#age").change(function(event) {
         var age = parseInt($("#updateuser").find( 'input[name="age"]' ).val());
         if (age > 12) {
@@ -597,13 +608,25 @@
           $("#schoollunch").hide();
         }
       });
+
+      // USED BY ALERTIFY 
+      reset = function () {
+        $("toggleCSS").href = "css/alertify.core.css";
+        alertify.set({
+          labels: {
+            ok: "OK",
+            cancel: "Cancel"
+          },
+          delay: 5000,
+          buttonReverse: false,
+          buttonFocus: "ok"
+        });
+      };
       
+      // LOAD THE USER INFORMATION
       $(document).ready(function() {
         var url = "http://thawing-mesa-1192.herokuapp.com/user";
-        /* Send the data using post */
         $.getJSON( url, { 'id' : $.query.get('id'), }, function(data) {
-          console.log(data);
-
           $("#updateuser").find( 'input[name="first_name"]' ).val(data[0].first_name);
           $("#updateuser").find( 'input[name="last_name"]' ).val(data[0].last_name);
           $("#updateuser").find( 'input[name="address"]' ).val(data[0].address);
@@ -618,6 +641,7 @@
           $("#updateuser").find( 'input[name="affiliation"]' ).val(data[0].affiliation);
           $("#updateuser").find( 'textarea[id="interests"]' ).val(data[0].interests);
           $("#updateuser").find( 'textarea[id="referred"]' ).val(data[0].referred);
+          // SET THE AGE RELATED QUESTIONS
           if (data[0].age > 12) {
             $("#schoollunch").hide();
             $("#incomelevel").show();
@@ -628,12 +652,58 @@
             $("#incomelevel").hide();
             $("#schoollunch").hide();
           }
+          // REMOVE THE LOADING CLASS FROM BODY
           $("body").removeClass("loading");
         });
      
       });
+      
+      $("#updateuser").submit(function(event) {
+        event.preventDefault();
+        // GET THE VALUES FROM THE FORM FIELDS
+        var $form = $( this ),
+            first_name = $form.find( 'input[name="first_name"]' ).val(),
+            last_name = $form.find( 'input[name="last_name"]' ).val(),
+            address = $form.find( 'input[name="address"]' ).val(),
+            city = $form.find( 'input[name="city"]' ).val(),
+            email = $form.find( 'input[name="email"]' ).val(),
+            zip = $form.find( 'input[name="zip"]' ).val(),
+            state = $form.find( 'select[id="state"]' ).val(),
+            phone = $form.find( 'input[name="phone"]' ).val(),
+            gender = $form.find( 'select[id="gender"]' ).val(),
+            ethnicity = $form.find( 'select[id="ethnicity"]' ).val(),
+            age = $form.find( 'input[name="age"]' ).val(),
+            affiliation = $form.find( 'input[name="affiliation"]' ).val(),
+            interests = $form.find( 'textarea[id="interests"]' ).val(),
+            referred = $form.find( 'textarea[id="referred"]' ).val(),
+            url = "http://thawing-mesa-1192.herokuapp.com/user/update";
        
-
+        // SEND A POST REQUEST TO OUR API
+        var posting = $.post( url, {
+          'id' : $.query.get('id'),
+          'first_name' : first_name,
+          'last_name' : last_name,
+          'address' : address,
+          'city' : city,
+          'state' : state,
+          'zip' : zip,
+          'email' : email,
+          'phone' : phone,
+          'gender' : gender,
+          'ethnicity' : ethnicity,
+          'age' : age,
+          'affiliation' : affiliation,
+          'interests' : interests,
+          'referred' : referred,
+        } );
+        
+        // DISPLAY A NOTIFICATION THAT WE SUCCEEDED - CURRENTLY DONE BLINDLY. SHOULD BE MODIFIED TO PARSEJSON
+        posting.done(function( data ) {
+          console.log(data);
+          reset();
+          alertify.success("User information updated!");
+        });
+      });
 
       </script>
       
