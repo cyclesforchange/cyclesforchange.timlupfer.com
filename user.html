@@ -39,11 +39,9 @@
     </script>
     <![endif]-->
     <link href="css/main.css" rel="stylesheet">
-    <link href="css/wysiwyg/bootstrap-wysihtml5.css" rel="stylesheet">
-    <link href="css/wysiwyg/wysiwyg-color.css" rel="stylesheet">
     <link href="css/charts-graphs.css" rel="stylesheet">
+    <link href="http://code.jquery.com/ui/1.10.2/themes/smoothness/jquery-ui.css" rel="stylesheet">
     <link href="css/alertify.core.css" rel="stylesheet" id="toggleCSS">
-
   </head>
   <body>
 
@@ -631,6 +629,7 @@
       // ADD THE LOADING CLASS IMMEDIATELY AFTER LOADING JQUERY
       $("body").addClass("loading");
     </script>
+    <script src="//ajax.googleapis.com/ajax/libs/jqueryui/1.10.2/jquery-ui.min.js"></script>
     <script src="js/bootstrap.js">
     </script>
     <script src="js/jquery.scrollUp.js">
@@ -669,6 +668,12 @@
         e.preventDefault();
         $(this).tab('show');
       })
+      
+      //TURN DATE FIELD INTO PICKER
+      $(function() {
+        $( "#v_date" ).datepicker();
+        $( "#v_date" ).datepicker("option", "dateFormat", "yy-mm-dd");
+      });
       
       // EXPOSE DIFFERENT QUESTIONS FOR DIFFERENT AGES
       $("#age").change(function(event) {
