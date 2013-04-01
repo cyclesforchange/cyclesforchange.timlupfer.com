@@ -748,6 +748,14 @@
       $(document).ready(function() {
         var url = "http://thawing-mesa-1192.herokuapp.com/user";
         $.getJSON( url, { 'id' : $.query.get('id'), }, function(data) {
+          // SET THE AGE RELATED QUESTIONS
+          if (data[0].age > 12) {
+            $("#schoollunch").hide();
+            $("#incomelevel").show();
+          } else if (age > 0 && age <= 12) {
+            $("#incomelevel").hide();
+            $("#schoollunch").show();
+          }
           $("#updateuser").find( 'input[name="first_name"]' ).val(data[0].first_name);
           $("#updateuser").find( 'input[name="last_name"]' ).val(data[0].last_name);
           $("#updateuser").find( 'input[name="address"]' ).val(data[0].address);
@@ -763,7 +771,8 @@
           $("#updateuser").find( 'textarea[id="interests"]' ).val(data[0].interests);
           $("#updateuser").find( 'select[id="referred"]' ).val(data[0].referred);
           $("#updateuser").find( 'textarea[id="referred_other"]' ).val(data[0].referred_other);
-          $("#updateuser").find( 'input[name="incomelevels_members"]' ).val(data[0].incomelevels_members);
+          $("#updateuser").find( 'input[id="incomelevels_members"]' ).val(data[0].incomelevels_members);
+          //console.log(data[0].incomelevels_members);
           
           var household_members = parseInt($("#updateuser").find( 'input[id="incomelevels_members"]' ).val());
           
@@ -825,17 +834,6 @@
           }  
           $("#updateuser").find( 'select[id="incomelevels_income"]' ).val(data[0].incomelevels_income);
 
-          // SET THE AGE RELATED QUESTIONS
-          if (data[0].age > 12) {
-            $("#schoollunch").hide();
-            $("#incomelevel").show();
-          } else if (age > 0 && age <= 12) {
-            $("#incomelevel").hide();
-            $("#schoollunch").show();
-          } else {
-            $("#incomelevel").hide();
-            $("#schoollunch").hide();
-          }
           //CHECK IF WE HAVE DATA IN OTHER
           if ($("#updateuser").find( 'select[id="referred"]' ).val() == "other") {
             $("#referred_other").show();
@@ -953,6 +951,8 @@
             interests = $form.find( 'textarea[id="interests"]' ).val(),
             referred = $form.find( 'select[id="referred"]' ).val(),
             referred_other = $form.find( 'textarea[id="referred_other"]' ).val(),
+            incomelevels_members = $form.find( 'input[id="incomelevels_members"]' ).val(),
+            incomelevels_income = $form.find( 'select[id="incomelevels_income"]' ).val(),
             url = "http://thawing-mesa-1192.herokuapp.com/user/update";
        
         // SEND A POST REQUEST TO OUR API
@@ -973,6 +973,8 @@
           'interests' : interests,
           'referred' : referred,
           'referred_other' : referred_other,
+          'incomelevels_members' : incomelevels_members,
+          'incomelevels_income' : incomelevels_income,
         } );
         // DISPLAY A NOTIFICATION THAT WE SUCCEEDED - CURRENTLY DONE BLINDLY. SHOULD BE MODIFIED TO PARSEJSON
         posting.done(function( data ) {
