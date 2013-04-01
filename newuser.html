@@ -386,12 +386,21 @@
                           <option value="" selected="selected">
                             Select an option
                           </option>
-                          <option value="male">
-                            Male
-                          </option>
                           <option value="female">
                             Female
                           </option>
+                          <option value="male">
+                            Male
+                          </option>
+                          <option value="transgender">
+                            Transgender
+                          </option>
+                          <option value="other">
+                            Other
+                          </option>    
+                          <option value="na">
+                            Prefer not to say
+                          </option>                              
                         </select>
                       </div>
                     </div>
@@ -452,17 +461,22 @@
                     <!-- INCOME -->
                     <div id="incomelevel" class="control-group" style="display:none">
                       <label class="control-label">
-                        Income question
+                        Household income
                       </label>
                       <div class="controls">
-                        Income question here!
+                        <input type="text" id="incomelevels_members" class="span6" placeholder="Number of members in your household" />
+                        <select id="incomelevels_income" class="span6">
+                          <option value="" selected="selected">
+                            Select an option
+                          </option>                               
+                        </select>                      
                       </div>
                     </div>
                     
                     <!-- INTERESTS -->
                     <div id="interest" class="control-group">
                       <label class="control-label">
-                        Interests
+                        What skills or interests do you have to contribute?
                       </label>
                       <div class="controls">
                         <textarea id="interests" class="input-block-level" placeholder="Interests"></textarea>
@@ -472,13 +486,29 @@
                     <!-- REFERRED -->
                     <div id="refer" class="control-group">
                       <label class="control-label">
-                        Referred by
+                        How were you referred to Cycles for Change?
                       </label>
                       <div class="controls">
-                        <textarea id="referred" class="input-block-level" placeholder="Referred by"></textarea>
+                        <select id="referred" class="span6">
+                          <option value="" selected="selected">
+                            Select an option
+                          </option>
+                          <option value="website">
+                            Website
+                          </option>
+                          <option value="friend_or_family">
+                            Friend/Family
+                          </option>
+                          <option value="media">
+                            Media
+                          </option>
+                          <option value="other">
+                            Other
+                          </option>  
+                        </select>
+                        <textarea id="referred_other" class="input-block-level" placeholder="If 'other', please describe here." style="display:none; margin-top: 10px;"></textarea>
                       </div>
                     </div>
-
               
                     <div class="form-actions no-margin">
                       <button type="submit" class="btn btn-info pull-right">
@@ -503,28 +533,12 @@
       </p>
     </footer>
     
-    <script src="js/wysiwyg/wysihtml5-0.3.0.js">
-    </script>
-    <script src="js/jquery.min.js">
+    <!-- LOAD EXTERNAL JAVASCRIPTS -->
+    <script src="//ajax.googleapis.com/ajax/libs/jquery/1.9.1/jquery.min.js"></script>
     </script>
     <script src="js/bootstrap.js">
     </script>
     <script src="js/jquery.scrollUp.js">
-    </script>
-
-    <script src="js/wysiwyg/bootstrap-wysihtml5.js">
-    </script>
-    <script type="text/javascript" src="js/date-picker/date.js">
-    </script>
-    <script type="text/javascript" src="js/date-picker/daterangepicker.js">
-    </script>
-
-    <!-- Google Visualization JS -->
-    <script type="text/javascript" src="https://www.google.com/jsapi">
-    </script>
-
-    <!-- Sparkline JS -->
-    <script src="js/jquery.sparkline.js">
     </script>
     
     <!-- Tiny Scrollbar JS -->
@@ -550,6 +564,7 @@
         });
       });
 
+      //AFTER CHANGING AGE
       $("#age").change(function(event) {
         var age = parseInt($("#newuser").find( 'input[name="age"]' ).val());
         if (age > 12) {
@@ -561,6 +576,84 @@
         } else {
           $("#incomelevel").hide();
           $("#schoollunch").hide();
+        }
+      });
+      
+      //AFTER CHANGING HOUSEHOLD MEMBERS
+      $("#incomelevels_members").change(function(event) {
+        var household_members = parseInt($("#newuser").find( 'input[id="incomelevels_members"]' ).val());
+        
+        //REMOVE ANY EXISTING INCOME LEVEL VALUES 
+        $("#incomelevels_income option[value='level1']").remove();
+        $("#incomelevels_income option[value='level2']").remove();
+        $("#incomelevels_income option[value='level3']").remove();
+        $("#incomelevels_income option[value='level4']").remove();
+        
+        //__$17,600 or Less  __$17,601 - 29,350  __$29,351  44,800  __$44,801 or More
+        if (household_members == 1) {
+          $("#incomelevels_income").append(new Option("$17,600 or less", "level1"));
+          $("#incomelevels_income").append(new Option("$17,601 to $29,350", "level2"));
+          $("#incomelevels_income").append(new Option("$29,351 to $44,800", "level3"));
+          $("#incomelevels_income").append(new Option("$44,801 or more", "level4"));          
+        }
+        //__$20,100 or Less  __$20,101 - 33,550  __$33,551 - 51,200  __$51,201 or More
+        else if (household_members == 2) {
+          $("#incomelevels_income").append(new Option("$20,100 or less", "level1"));
+          $("#incomelevels_income").append(new Option("$20,101 to $33,550", "level2"));
+          $("#incomelevels_income").append(new Option("$33,551 to $51,200", "level3"));
+          $("#incomelevels_income").append(new Option("$51,201 or more", "level4"));          
+        }
+        //3 Members: __$22,650 or Less  __$22,651 - 37,750  __$37,751 - 57,600  __$57,601 or More
+        else if (household_members == 3) {
+          $("#incomelevels_income").append(new Option("$22,650 or less", "level1"));
+          $("#incomelevels_income").append(new Option("$22,651 to $37,750", "level2"));
+          $("#incomelevels_income").append(new Option("$37,751 to $57,600", "level3"));
+          $("#incomelevels_income").append(new Option("$57,601 or more", "level4"));          
+        }
+        //4 Members: __$25,150 or Less  __$25,151 - 41,950  __$41,951 - 64,000  __$64,001 or More 
+        else if (household_members == 4) {
+          $("#incomelevels_income").append(new Option("$25,120 or less", "level1"));
+          $("#incomelevels_income").append(new Option("$25,151 to $41,950", "level2"));
+          $("#incomelevels_income").append(new Option("$41,951 to $64,000", "level3"));
+          $("#incomelevels_income").append(new Option("$64,001 or more", "level4"));          
+        }
+        //5 Members: __$27,150 or Less  __$27,151 - 45,300  __$45,301 - 69,100  __$69,101 or More
+        else if (household_members == 5) {
+          $("#incomelevels_income").append(new Option("$27,150 or less", "level1"));
+          $("#incomelevels_income").append(new Option("$27,151 to $45,300", "level2"));
+          $("#incomelevels_income").append(new Option("$45,301 to $69,100", "level3"));
+          $("#incomelevels_income").append(new Option("$69,101 or more", "level4"));          
+        }
+        //6 Members: __$29,150 or Less  __$29,151 - 48,650  __$48,651 - 74,250  __$74,251 or More
+        else if (household_members == 6) {
+          $("#incomelevels_income").append(new Option("$29,150 or less", "level1"));
+          $("#incomelevels_income").append(new Option("$29,151 to $48,650", "level2"));
+          $("#incomelevels_income").append(new Option("$48,651 to $74,250", "level3"));
+          $("#incomelevels_income").append(new Option("$74,251 or more", "level4"));          
+        }  
+        //7 Members: __$31,200 or Less  __$31,201 - 52,000  __$52,001 - 79,350  __$79,351 or More
+        else if (household_members == 7) {
+          $("#incomelevels_income").append(new Option("$31,200 or less", "level1"));
+          $("#incomelevels_income").append(new Option("$31,201 to $52,000", "level2"));
+          $("#incomelevels_income").append(new Option("$52,001 to $79,350", "level3"));
+          $("#incomelevels_income").append(new Option("$79,351 or more", "level4"));          
+        }
+        //8 Members: __$33,200 or Less  __$33,201 - 55,350  __$55,351 - 84,500  __$84,501 or More
+        else if (household_members >= 8) {
+          $("#incomelevels_income").append(new Option("$33,200 or less", "level1"));
+          $("#incomelevels_income").append(new Option("$33,201 to $55,350", "level2"));
+          $("#incomelevels_income").append(new Option("$55,351 to $84,500", "level3"));
+          $("#incomelevels_income").append(new Option("$84,501 or more", "level4"));          
+        }  
+                          
+      });
+      
+      //IF REFERRED BY OTHER, EXPOSE THE TEXTAREA
+      $("#referred").change(function(event) {
+        if ($("#newuser").find( 'select[id="referred"]' ).val() == "other") {
+          $("#referred_other").show();
+        } else {
+          $("#referred_other").hide();
         }
       });
 
@@ -578,9 +671,8 @@
       };
       
       $("#newuser").submit(function(event) {
-        /* stop form from submitting normally */
         event.preventDefault();
-        /* get some values from elements on the page: */
+        //RETRIEVE THE FORM VALUES
         var $form = $( this ),
             first_name = $form.find( 'input[name="first_name"]' ).val(),
             last_name = $form.find( 'input[name="last_name"]' ).val(),
@@ -595,10 +687,13 @@
             age = $form.find( 'input[name="age"]' ).val(),
             affiliation = $form.find( 'input[name="affiliation"]' ).val(),
             interests = $form.find( 'textarea[id="interests"]' ).val(),
-            referred = $form.find( 'textarea[id="referred"]' ).val(),
+            referred = $form.find( 'select[id="referred"]' ).val(),
+            referred_other = $form.find( 'textarea[id="referred_other"]' ).val(),
+            incomelevels_members = $form.find( 'input[id="incomelevels_members"]' ).val(),
+            incomelevels_income = $form.find( 'select[id="incomelevels_income"]' ).val(),
             url = "http://thawing-mesa-1192.herokuapp.com/user/new";
-       
-        /* Send the data using post */
+
+        //POST TO OUR API
         var posting = $.post( url, { 
           'first_name' : first_name,
           'last_name' : last_name,
@@ -614,80 +709,22 @@
           'affiliation' : affiliation,
           'interests' : interests,
           'referred' : referred,
+          'referred_other' : referred_other,
         } );
        
-        /* Put the results in a div */
+        //PROCESS THE COMPLETED FORM
         posting.done(function( data ) {
-          console.log(data);
           reset();
           alertify.success("User added!");
           $("#newuser")[0].reset();
         });
       });
 
-      //Tooltip
-      $('a').tooltip('hide');
-      $('i').tooltip('hide');
-
-
-      //Tiny Scrollbar
-      $('#scrollbar').tinyscrollbar();
-      $('#scrollbar-one').tinyscrollbar();
-      $('#scrollbar-two').tinyscrollbar();
-      $('#scrollbar-three').tinyscrollbar();
-
       //Tabs
       $('#myTab a').click(function (e) {
         e.preventDefault();
         $(this).tab('show');
       })
-
-      //Main menu navigation
-      
-      $('.submenu > a').click(function(e){
-        e.preventDefault();
-        var submenu = $(this).siblings('ul');
-        var li = $(this).parents('li');
-        var submenus = $('#mainnav li.submenu ul');
-        var submenus_parents = $('#mainnav li.submenu');
-        if(li.hasClass('open'))
-        {
-          if(($(window).width() > 768) || ($(window).width() < 479)) {
-            submenu.slideUp();
-          } else {
-            submenu.fadeOut(250);
-          }
-          li.removeClass('open');
-        } else 
-        {
-          if(($(window).width() > 768) || ($(window).width() < 479)) {
-            submenus.slideUp();     
-            submenu.slideDown();
-          } else {
-            submenus.fadeOut(250);      
-            submenu.fadeIn(250);
-          }
-          submenus_parents.removeClass('open');   
-          li.addClass('open');  
-        }
-      });
-      
-      var ul = $('#mainnav > ul');
-      
-      $('#mainnav > a').click(function(e)
-      {
-        e.preventDefault();
-        var mainnav = $('#mainnav');
-        if(mainnav.hasClass('open'))
-        {
-          mainnav.removeClass('open');
-          ul.slideUp(250);
-        } else 
-        {
-          mainnav.addClass('open');
-          ul.slideDown(250);
-        }
-      });
 
       </script>
       

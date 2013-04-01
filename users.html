@@ -24,7 +24,7 @@
   <head>
     <meta charset="utf-8">
     <title>
-      Cycles for Change
+      Cycles for Change - User list
     </title>
     <meta name="author" content="">
     <meta content="width=device-width, initial-scale=1.0, user-scalable=no" name="viewport">
@@ -39,8 +39,6 @@
     </script>
     <![endif]-->
     <link href="css/main.css" rel="stylesheet">
-    <link href="css/wysiwyg/bootstrap-wysihtml5.css" rel="stylesheet">
-    <link href="css/wysiwyg/wysiwyg-color.css" rel="stylesheet">
     <link href="css/charts-graphs.css" rel="stylesheet">
     <link href="css/alertify.core.css" rel="stylesheet" id="toggleCSS">
 
@@ -142,8 +140,7 @@
 
                     </table>
                     <div class="clearfix">
-                    </div>
-                    
+                    </div>                    
                   </div>
                 </div>
               </div>
@@ -151,17 +148,19 @@
           </div>
         </div>
       </div>
-
-      <!--/.fluid-container-->
     </div>
     <footer>
       <p>
         &copy; Cycles for Change 2013
       </p>
     </footer>
+    <!-- LOADING DIV, HIDDEN BY DEFAULT -->
     <div class="loading_modal"></div>
+    
+    <!-- LOAD EXTERNAL JAVASCRIPTS -->
     <script src="//ajax.googleapis.com/ajax/libs/jquery/1.9.1/jquery.min.js"></script>
     </script>
+    <!-- BEGIN LOADING -->
     <script type="text/javascript">
       $("body").addClass("loading");
     </script>
@@ -195,18 +194,21 @@
         });
       });
 
-      //Data Tables
+      //DATATABLES STUFF
       $(document).ready(function () {     
         $('#data-table').dataTable({
           "sPaginationType": "full_numbers",
           "fnCreatedRow": function(nRow, aData, iDataIndex ) {
+            //ADD A CLICK HANDLER FOR EACH ROW WITH A RANDOM STRING TO EXPIRE THE CACHE
             $(nRow).bind('click', function() {
               window.location.href = "/user.html?id=" + aData[0] + "&rand=" + Math.random().toString(36).substring(7);
             });
+            //CHANGE THE CURSOR TO A POINTER
             $(nRow).css('cursor', 'pointer');
           }, 
         });
         
+        //RETRIEVE THE INFORMATION FROM OUR API
         $.getJSON('http://thawing-mesa-1192.herokuapp.com/user/all', null, function(json) {
           $.each(json, function(key, row) {
             console.log(key, row);
@@ -227,14 +229,14 @@
               row.interests,
               row.referred,
             ]);
-            
           });
+          //REMOVE THE LOADING CLASS AFTER CREATING THE TABLE
           $("body").removeClass("loading");     
         });
 
       });
 
-      //Tabs
+      //TABS
       $('#myTab a').click(function (e) {
         e.preventDefault();
         $(this).tab('show');
