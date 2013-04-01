@@ -201,7 +201,7 @@
           "sPaginationType": "full_numbers",
           "fnCreatedRow": function(nRow, aData, iDataIndex ) {
             $(nRow).bind('click', function() {
-              window.location.href = "/user.html?id=" + aData[0];
+              window.location.href = "/user.html?id=" + aData[0] + "&rand=" + Math.random().toString(36).substring(7);
             });
             $(nRow).css('cursor', 'pointer');
           }, 
