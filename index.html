@@ -277,11 +277,51 @@
     </footer>
     <div class="loading_modal"></div>
     
+    <!-- LOGIN MODAL -->
+    <div id="myModal" class="modal hide fade" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+      <div class="modal-header">
+        <button type="button" class="close" data-dismiss="modal" aria-hidden="true">
+          ×
+        </button>
+        <h4 id="myModalLabel">
+          You are not logged in
+        </h4>
+      </div>
+      <div class="modal-body">
+        <p>
+          You are not currently logged in. During testing, all features are still available. However, you should login!
+        </p>
+      </div>
+      <div class="modal-footer">
+        <button class="btn" data-dismiss="modal" aria-hidden="true">
+          Close
+        </button>
+        <button id="google_login" class="btn btn-primary">
+          Login with Google
+        </button>
+      </div>
+    </div>
+  </div>
     <script src="//ajax.googleapis.com/ajax/libs/jquery/1.9.1/jquery.min.js"></script>
     <script type="text/javascript">
       $("body").addClass("loading");
+      $("#google_login").click(function(event) {
+        window.location.href = "https://thawing-mesa-1192.herokuapp.com/auth/google_oauth2";
+      });
     </script>
     <script src="js/bootstrap.js">
+    </script>
+    <script type="text/javascript">
+      $.ajax({
+        url: "https://thawing-mesa-1192.herokuapp.com/auth/session/user",
+        context: document.body,
+        async: false,
+      }).done(function(data) {
+        if (!data.length) {
+          $("#myModal").modal();
+        }
+        console.log(data.length);
+      });
     </script>
     <script src="js/jquery.scrollUp.js">
     </script>
