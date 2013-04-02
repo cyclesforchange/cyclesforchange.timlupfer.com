@@ -638,15 +638,13 @@
                         Mustache cliche tempor, williamsburg carles vegan helvetica.prehenderit butcher retro keffiyeh dreamcatcher synth. Cosby Reprehenderit butcher retro keffiyeh dreamcatcher synth. Cosby sweater eu banh mi, qui irure terry richardson ex squid.
                       </p>
                     </div>
-                    
+                  </div>
                 </div>
               </div>
             </div>
           </div>
         </div>
       </div>
-
-      <!--/.fluid-container-->
     </div>
     <footer>
       <p>
@@ -655,7 +653,6 @@
     </footer>
     <div class="loading_modal"></div>
     <script src="//ajax.googleapis.com/ajax/libs/jquery/1.9.1/jquery.min.js"></script>
-    </script>
     <script type="text/javascript">
       // ADD THE LOADING CLASS IMMEDIATELY AFTER LOADING JQUERY
       $("body").addClass("loading");
@@ -746,7 +743,7 @@
       
       // LOAD THE USER INFORMATION
       $(document).ready(function() {
-        var url = "http://thawing-mesa-1192.herokuapp.com/user";
+        var url = "https://thawing-mesa-1192.herokuapp.com/user";
         $.getJSON( url, { 'id' : $.query.get('id'), }, function(data) {
           // SET THE AGE RELATED QUESTIONS
           if (data[0].age > 12) {
@@ -953,7 +950,7 @@
             referred_other = $form.find( 'textarea[id="referred_other"]' ).val(),
             incomelevels_members = $form.find( 'input[id="incomelevels_members"]' ).val(),
             incomelevels_income = $form.find( 'select[id="incomelevels_income"]' ).val(),
-            url = "http://thawing-mesa-1192.herokuapp.com/user/update";
+            url = "https://thawing-mesa-1192.herokuapp.com/user/update";
        
         // SEND A POST REQUEST TO OUR API
         var posting = $.post( url, {
@@ -993,7 +990,7 @@
             v_redeemed = $form.find( 'input[id="v_redeemed"]' ).val(),
             v_type = $form.find( 'input[id="v_type"]' ).val(),
             v_pid = $.query.get('id'),
-            url = "http://thawing-mesa-1192.herokuapp.com/user/volunteer";
+            url = "https://thawing-mesa-1192.herokuapp.com/user/volunteer";
        
         // SEND A POST REQUEST TO OUR API
         var posting = $.post( url, {

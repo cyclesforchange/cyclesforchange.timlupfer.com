@@ -303,7 +303,7 @@
     <!-- BEGIN CUSTOM JAVASCRIPT -->
     <script type="text/javascript">
       // FILL OUR HEADER AREA WITH NUMBERS
-      $.getJSON('http://thawing-mesa-1192.herokuapp.com/user/all', null, function(json) {
+      $.getJSON('https://thawing-mesa-1192.herokuapp.com/user/all', null, function(json) {
         $.each(json, function(key, row) {
           $(".clients > h3").html(json.length);
         });

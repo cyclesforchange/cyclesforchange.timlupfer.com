@@ -159,7 +159,6 @@
     
     <!-- LOAD EXTERNAL JAVASCRIPTS -->
     <script src="//ajax.googleapis.com/ajax/libs/jquery/1.9.1/jquery.min.js"></script>
-    </script>
     <!-- BEGIN LOADING -->
     <script type="text/javascript">
       $("body").addClass("loading");
@@ -209,7 +208,7 @@
         });
         
         //RETRIEVE THE INFORMATION FROM OUR API
-        $.getJSON('http://thawing-mesa-1192.herokuapp.com/user/all', null, function(json) {
+        $.getJSON('https://thawing-mesa-1192.herokuapp.com/user/all', null, function(json) {
           $.each(json, function(key, row) {
             console.log(key, row);
             $('#data-table').dataTable().fnAddData([
