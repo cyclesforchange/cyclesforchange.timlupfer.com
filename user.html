@@ -400,7 +400,36 @@
                                 </span>
                               </div>
                             </div>
-        
+                            
+                            <!-- BEGIN PREVIOUS PARTICIPATION -->
+                            <div class="control-group">
+                              <label class="control-label">
+                                Past participation
+                              </label>
+                              <div class="controls">
+                                <label class="checkbox">
+                                  <input type="checkbox" id="participation_eab" value="1">
+                                  Earn a bike
+                                </label>
+                                <label class="checkbox">
+                                  <input type="checkbox" id="participation_library" value="1">
+                                  Bike library patron/liaison
+                                </label>
+                                <label class="checkbox">
+                                  <input type="checkbox" id="participation_apprentice" value="1">
+                                  Youth apprentice
+                                </label>
+                                <label class="checkbox">
+                                  <input type="checkbox" id="participation_youthclass" value="1">
+                                  Youth class
+                                </label>
+                                <label class="checkbox">
+                                  <input type="checkbox" id="participation_volunteer" value="1">
+                                  Volunteer
+                                </label>
+                              </div>
+                            </div> 
+                           
                             <!-- BEGIN GENDER -->
                             <div class="control-group">
                               <label class="control-label">
@@ -489,7 +518,19 @@
                                 Household income
                               </label>
                               <div class="controls">
-                                <input type="text" id="incomelevels_members" class="span6" placeholder="Number of members in your household" />
+                                <select id="incomelevels_members" class="span6">
+                                  <option value="" selected="selected">
+                                    Number of members in household
+                                  </option>
+                                  <option value="1">1</option>
+                                  <option value="2">2</option>
+                                  <option value="3">3</option>
+                                  <option value="4">4</option>
+                                  <option value="5">5</option>
+                                  <option value="6">6</option>
+                                  <option value="7">7</option>
+                                  <option value="8">8+</option>                          
+                                </select>
                                 <select id="incomelevels_income" class="span6">
                                   <option value="" selected="selected">
                                     Select an option
@@ -768,10 +809,27 @@
           $("#updateuser").find( 'textarea[id="interests"]' ).val(data[0].interests);
           $("#updateuser").find( 'select[id="referred"]' ).val(data[0].referred);
           $("#updateuser").find( 'textarea[id="referred_other"]' ).val(data[0].referred_other);
-          $("#updateuser").find( 'input[id="incomelevels_members"]' ).val(data[0].incomelevels_members);
-          //console.log(data[0].incomelevels_members);
+          $("#updateuser").find( 'select[id="incomelevels_members"]' ).val(data[0].incomelevels_members);
+          $("#updateuser").find( 'select[id="incomelevels_members"]' ).val(data[0].incomelevels_members);
+          if (data[0].participation_eab == "true") {
+            $("#updateuser").find( 'input[id="participation_eab"]' ).attr('checked', true);
+          }
+          if (data[0].participation_youthclass == "true") {
+            $("#updateuser").find( 'input[id="participation_youthclass"]' ).attr('checked', true);
+          }
+          if (data[0].participation_volunteer == "true") {
+            $("#updateuser").find( 'input[id="participation_volunteer"]' ).attr('checked', true);
+          }
+          if (data[0].participation_apprentice == "true") {
+            $("#updateuser").find( 'input[id="participation_apprentice"]' ).attr('checked', true);
+          }
+          if (data[0].participation_library == "true") {
+            $("#updateuser").find( 'input[id="participation_library"]' ).attr('checked', true);
+          }
           
-          var household_members = parseInt($("#updateuser").find( 'input[id="incomelevels_members"]' ).val());
+          console.log(data[0].participation_eab, data[0].participation_youthclass, data[0].participation_volunteer, data[0].participation_apprentice, data[0].participation_library);
+          
+          var household_members = parseInt($("#updateuser").find( 'select[id="incomelevels_members"]' ).val());
           
           //__$17,600 or Less  __$17,601 - 29,350  __$29,351  44,800  __$44,801 or More
           if (household_members == 1) {
@@ -862,7 +920,7 @@
 
       //AFTER CHANGING HOUSEHOLD MEMBERS
       $("#incomelevels_members").change(function(event) {
-        var household_members = parseInt($("#updateuser").find( 'input[id="incomelevels_members"]' ).val());
+        var household_members = parseInt($("#updateuser").find( 'select[id="incomelevels_members"]' ).val());
         
         //REMOVE ANY EXISTING INCOME LEVEL VALUES 
         $("#incomelevels_income option[value='level1']").remove();
@@ -933,45 +991,55 @@
         event.preventDefault();
         // GET THE VALUES FROM THE FORM FIELDS
         var $form = $( this ),
-            first_name = $form.find( 'input[name="first_name"]' ).val(),
-            last_name = $form.find( 'input[name="last_name"]' ).val(),
-            address = $form.find( 'input[name="address"]' ).val(),
-            city = $form.find( 'input[name="city"]' ).val(),
-            email = $form.find( 'input[name="email"]' ).val(),
-            zip = $form.find( 'input[name="zip"]' ).val(),
-            state = $form.find( 'select[id="state"]' ).val(),
-            phone = $form.find( 'input[name="phone"]' ).val(),
-            gender = $form.find( 'select[id="gender"]' ).val(),
-            ethnicity = $form.find( 'select[id="ethnicity"]' ).val(),
-            age = $form.find( 'input[name="age"]' ).val(),
-            affiliation = $form.find( 'input[name="affiliation"]' ).val(),
-            interests = $form.find( 'textarea[id="interests"]' ).val(),
-            referred = $form.find( 'select[id="referred"]' ).val(),
-            referred_other = $form.find( 'textarea[id="referred_other"]' ).val(),
-            incomelevels_members = $form.find( 'input[id="incomelevels_members"]' ).val(),
-            incomelevels_income = $form.find( 'select[id="incomelevels_income"]' ).val(),
-            url = "https://thawing-mesa-1192.herokuapp.com/user/update";
+            first_name                = $form.find( 'input[name="first_name"]' ).val(),
+            last_name                 = $form.find( 'input[name="last_name"]' ).val(),
+            address                   = $form.find( 'input[name="address"]' ).val(),
+            city                      = $form.find( 'input[name="city"]' ).val(),
+            email                     = $form.find( 'input[name="email"]' ).val(),
+            zip                       = $form.find( 'input[name="zip"]' ).val(),
+            state                     = $form.find( 'select[id="state"]' ).val(),
+            phone                     = $form.find( 'input[name="phone"]' ).val(),
+            gender                    = $form.find( 'select[id="gender"]' ).val(),
+            ethnicity                 = $form.find( 'select[id="ethnicity"]' ).val(),
+            age                       = $form.find( 'input[name="age"]' ).val(),
+            affiliation               = $form.find( 'input[name="affiliation"]' ).val(),
+            interests                 = $form.find( 'textarea[id="interests"]' ).val(),
+            referred                  = $form.find( 'select[id="referred"]' ).val(),
+            referred_other            = $form.find( 'textarea[id="referred_other"]' ).val(),
+            incomelevels_members      = $form.find( 'select[id="incomelevels_members"]' ).val(),
+            incomelevels_income       = $form.find( 'select[id="incomelevels_income"]' ).val(),
+            participation_eab         = $("#participation_eab").is(':checked')
+            participation_library     = $("#participation_library").is(':checked')
+            participation_youthclass  = $("#participation_youthclass").is(':checked')
+            participation_volunteer   = $("#participation_volunteer").is(':checked')
+            participation_apprentice  = $("#participation_apprentice").is(':checked') 
+            url                       = "https://thawing-mesa-1192.herokuapp.com/user/update";
        
         // SEND A POST REQUEST TO OUR API
         var posting = $.post( url, {
-          'id' : $.query.get('id'),
-          'first_name' : first_name,
-          'last_name' : last_name,
-          'address' : address,
-          'city' : city,
-          'state' : state,
-          'zip' : zip,
-          'email' : email,
-          'phone' : phone,
-          'gender' : gender,
-          'ethnicity' : ethnicity,
-          'age' : age,
-          'affiliation' : affiliation,
-          'interests' : interests,
-          'referred' : referred,
-          'referred_other' : referred_other,
-          'incomelevels_members' : incomelevels_members,
-          'incomelevels_income' : incomelevels_income,
+          'id'                        : $.query.get('id'),
+          'first_name'                : first_name,
+          'last_name'                 : last_name,
+          'address'                   : address,
+          'city'                      : city,
+          'state'                     : state,
+          'zip'                       : zip,
+          'email'                     : email,
+          'phone'                     : phone,
+          'gender'                    : gender,
+          'ethnicity'                 : ethnicity,
+          'age'                       : age,
+          'affiliation'               : affiliation,
+          'interests'                 : interests,
+          'referred'                  : referred,
+          'referred_other'            : referred_other,
+          'incomelevels_members'      : incomelevels_members,
+          'incomelevels_income'       : incomelevels_income,
+          'participation_eab'         : participation_eab,
+          'participation_library'     : participation_library,
+          'participation_youthclass'  : participation_youthclass,
+          'participation_volunteer'   : participation_volunteer,
+          'participation_apprentice'  : participation_apprentice,
         } );
         // DISPLAY A NOTIFICATION THAT WE SUCCEEDED - CURRENTLY DONE BLINDLY. SHOULD BE MODIFIED TO PARSEJSON
         posting.done(function( data ) {
