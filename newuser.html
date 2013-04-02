@@ -480,11 +480,20 @@
                     <!-- BEGIN SCHOOL LUNCH -->
                     <div id="schoollunch" class="control-group" style="display:none">
                       <label class="control-label">
-                        School lunch question
+                        Do you receive free school lunch?
                       </label>
                       <div class="controls">
-                        Question shows up here!
-                      </div>
+                        <select id="incomelevels_schoollunch" class="span6">
+                          <option value="" selected="selected">
+                            Select an option
+                          </option>
+                          <option value="yes">
+                            Yes
+                          </option>
+                          <option value="no">
+                            No
+                          </option>                          
+                        </select>                       </div>
                     </div>
                     
                     <!-- INCOME -->
@@ -732,6 +741,7 @@
             referred_other            = $form.find( 'textarea[id="referred_other"]' ).val(),
             incomelevels_members      = $form.find( 'select[id="incomelevels_members"]' ).val(),
             incomelevels_income       = $form.find( 'select[id="incomelevels_income"]' ).val(),
+            incomelevels_schoollunch  = $form.find( 'select[id="incomelevels_schoollunch"]' ).val(),
             participation_eab         = $("#participation_eab").is(':checked')
             participation_library     = $("#participation_library").is(':checked')
             participation_youthclass  = $("#participation_youthclass").is(':checked')
@@ -759,6 +769,7 @@
           'referred_other'            : referred_other,
           'incomelevels_members'      : incomelevels_members,
           'incomelevels_income'       : incomelevels_income,
+          'incomelevels_schoollunch'  : incomelevels_schoollunch,
           'participation_eab'         : participation_eab,
           'participation_library'     : participation_library,
           'participation_youthclass'  : participation_youthclass,

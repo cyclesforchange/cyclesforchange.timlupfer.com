@@ -508,14 +508,24 @@
                                 School lunch question
                               </label>
                               <div class="controls">
-                                Question shows up here!
+                                <select id="incomelevels_schoollunch" class="span6">
+                                  <option value="" selected="selected">
+                                    Select an option
+                                  </option>
+                                  <option value="yes">
+                                    Yes
+                                  </option>
+                                  <option value="no">
+                                    No
+                                  </option>                          
+                                </select> 
                               </div>
                             </div>
                             
                             <!-- INCOME -->
                             <div id="incomelevel" class="control-group" style="display:none">
                               <label class="control-label">
-                                Household income
+                                Household members and income
                               </label>
                               <div class="controls">
                                 <select id="incomelevels_members" class="span6">
@@ -575,7 +585,6 @@
                                 <textarea id="referred_other" class="input-block-level" placeholder="If 'other', please describe here." style="display:none; margin-top: 10px;"></textarea>
                               </div>
                             </div>
-        
                       
                             <div class="form-actions no-margin">
                               <button type="submit" class="btn btn-info pull-right">
@@ -787,10 +796,10 @@
         var url = "https://thawing-mesa-1192.herokuapp.com/user";
         $.getJSON( url, { 'id' : $.query.get('id'), }, function(data) {
           // SET THE AGE RELATED QUESTIONS
-          if (data[0].age > 12) {
+          if (parseInt(data[0].age) > 12) {
             $("#schoollunch").hide();
             $("#incomelevel").show();
-          } else if (age > 0 && age <= 12) {
+          } else if (data[0].age > 0 && data[0].age <= 12) {
             $("#incomelevel").hide();
             $("#schoollunch").show();
           }
@@ -811,6 +820,7 @@
           $("#updateuser").find( 'textarea[id="referred_other"]' ).val(data[0].referred_other);
           $("#updateuser").find( 'select[id="incomelevels_members"]' ).val(data[0].incomelevels_members);
           $("#updateuser").find( 'select[id="incomelevels_members"]' ).val(data[0].incomelevels_members);
+          $("#updateuser").find( 'select[id="incomelevels_schoollunch"]' ).val(data[0].incomelevels_schoollunch);
           if (data[0].participation_eab == "true") {
             $("#updateuser").find( 'input[id="participation_eab"]' ).attr('checked', true);
           }
@@ -1008,6 +1018,7 @@
             referred_other            = $form.find( 'textarea[id="referred_other"]' ).val(),
             incomelevels_members      = $form.find( 'select[id="incomelevels_members"]' ).val(),
             incomelevels_income       = $form.find( 'select[id="incomelevels_income"]' ).val(),
+            incomelevels_schoollunch  = $form.find( 'select[id="incomelevels_schoollunch"]' ).val(),
             participation_eab         = $("#participation_eab").is(':checked')
             participation_library     = $("#participation_library").is(':checked')
             participation_youthclass  = $("#participation_youthclass").is(':checked')
@@ -1035,6 +1046,7 @@
           'referred_other'            : referred_other,
           'incomelevels_members'      : incomelevels_members,
           'incomelevels_income'       : incomelevels_income,
+          'incomelevels_schoollunch'  : incomelevels_schoollunch,
           'participation_eab'         : participation_eab,
           'participation_library'     : participation_library,
           'participation_youthclass'  : participation_youthclass,
@@ -1052,21 +1064,21 @@
       $("#volunteer-add").submit(function(event) {
         event.preventDefault();
         // GET THE VALUES FROM THE FORM FIELDS
-        var $form = $( this ),
-            v_date = $form.find( 'input[id="v_date"]' ).val(),
-            v_hours = $form.find( 'input[id="v_hours"]' ).val(),
-            v_redeemed = $form.find( 'input[id="v_redeemed"]' ).val(),
-            v_type = $form.find( 'input[id="v_type"]' ).val(),
-            v_pid = $.query.get('id'),
-            url = "https://thawing-mesa-1192.herokuapp.com/user/volunteer";
+        var $form       = $( this ),
+            v_date      = $form.find( 'input[id="v_date"]' ).val(),
+            v_hours     = $form.find( 'input[id="v_hours"]' ).val(),
+            v_redeemed  = $form.find( 'input[id="v_redeemed"]' ).val(),
+            v_type      = $form.find( 'input[id="v_type"]' ).val(),
+            v_pid       = $.query.get('id'),
+            url         = "https://thawing-mesa-1192.herokuapp.com/user/volunteer";
        
         // SEND A POST REQUEST TO OUR API
         var posting = $.post( url, {
-          'pid' : v_pid,
-          'date' : v_date,
-          'type' : v_type,
-          'hours' : v_hours,
-          'redeemed' : v_redeemed,
+          'pid'         : v_pid,
+          'date'        : v_date,
+          'type'        : v_type,
+          'hours'       : v_hours,
+          'redeemed'    : v_redeemed,
         } );
         // DISPLAY A NOTIFICATION THAT WE SUCCEEDED - CURRENTLY DONE BLINDLY. SHOULD BE MODIFIED TO PARSEJSON
         posting.done(function( data ) {

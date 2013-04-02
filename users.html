@@ -200,7 +200,7 @@
           "fnCreatedRow": function(nRow, aData, iDataIndex ) {
             //ADD A CLICK HANDLER FOR EACH ROW WITH A RANDOM STRING TO EXPIRE THE CACHE
             $(nRow).bind('click', function() {
-              window.location.href = "/user.html?id=" + aData[0] + "&rand=" + Math.random().toString(36).substring(7);
+              window.location.href = "/user.html?id=" + aData[0] + "&rand=" + Math.random().toString(36).substring(10);
             });
             //CHANGE THE CURSOR TO A POINTER
             $(nRow).css('cursor', 'pointer');
